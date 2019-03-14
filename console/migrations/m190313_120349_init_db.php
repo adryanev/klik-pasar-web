@@ -18,7 +18,7 @@ class m190313_120349_init_db extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%user_frontend}}',[
+        $this->createTable('{{%user}}',[
             'id'=>$this->primaryKey(),
             'username'=>$this->string(50),
             'email'=>$this->string(),
@@ -26,30 +26,14 @@ class m190313_120349_init_db extends Migration
             'auth_key'=>$this->string(32),
             'password_reset_token'=>$this->string(),
             'access_token'=>$this->string(),
-            'level_access'=>"ENUM('customer','agen')",
+            'level_access'=>"ENUM('admin, mitra, kurir, customer','agen')",
             'status'=>$this->boolean(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
-        ],$tableOptions);
-        $this->createTable('{{%user_backend}}',[
-            'id'=>$this->primaryKey(),
-            'username'=>$this->string(50),
-            'email'=>$this->string(),
-            'password_hash'=>$this->string(64),
-            'auth_key'=>$this->string(32),
-            'password_reset_token'=>$this->string(),
-            'access_token'=>$this->string(),
-            'level_access'=>"ENUM('admin','mitra','kurir')",
-            'status'=>$this->boolean(),
-            'created_at'=>$this->integer(),
-            'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
+
         ],$tableOptions);
 
-        $this->createTable('{{%profil_frontend}}',[
+        $this->createTable('{{%profil}}',[
             'id'=>$this->primaryKey(),
             'id_user'=>$this->integer(),
             'prefix'=>$this->string(),
@@ -69,53 +53,34 @@ class m190313_120349_init_db extends Migration
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
             'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
+            'updated_by'=>$this->integer(),
         ],$tableOptions);
         $this->createTable('{{%agen}}',[
             'id'=>$this->primaryKey(),
-            'id_profil'=>$this->integer(),
+            'id_user'=>$this->integer(),
             'kode_agen'=>$this->string(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
             'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
+            'updated_by'=>$this->integer(),
+
 
         ],$tableOptions);
-        $this->createTable('{{%saldo_backend}}',[
+
+        $this->createTable('{{%saldo}}',[
             'id'=>$this->primaryKey(),
             'saldo'=>$this->bigInteger(),
-            'created_at'=>$this->integer(),
-            'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer(),
-        ],$tableOptions);
-
-        $this->createTable('{{%saldo_frontend}}',[
-            'id'=>$this->primaryKey(),
-            'saldo'=>$this->bigInteger(),
-            'created_at'=>$this->integer(),
-            'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer(),
-        ],$tableOptions);
-
-        $this->createTable('{{%profil_backend}}',[
-            'id'=>$this->primaryKey(),
             'id_user'=>$this->integer(),
-            'prefix'=>$this->string(),
-            'nama_depan'=>$this->string(30),
-            'nama_belakang'=>$this->string(30),
-            'tempat_lahir'=> $this->string(),
-            'tanggal_lahir'=>$this->integer(),
-            'foto_profil'=>$this->string(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
             'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
+            'updated_by'=>$this->integer(),
         ],$tableOptions);
+
+
         $this->createTable('{{%mitra}}',[
             'id'=>$this->primaryKey(),
-            'id_profil'=>$this->integer(),
+            'id_user'=>$this->integer(),
             'kode_mitra'=>$this->string(),
             'nama_mitra'=>$this->string(),
             'latitude'=>$this->string(),
@@ -129,13 +94,13 @@ class m190313_120349_init_db extends Migration
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
             'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer()
+            'updated_by'=>$this->integer(),
 
         ],$tableOptions);
 
         $this->createTable('{{%kurir}}',[
             'id'=>$this->primaryKey(),
-            'id_profil'=>$this->integer(),
+            'id_user'=>$this->integer(),
             'kode_kurir'=>$this->string(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
@@ -158,17 +123,17 @@ class m190313_120349_init_db extends Migration
             'nama'=>$this->string(),
             'barcode'=>$this->string(),
             'deskripsi'=>$this->text(),
-            'id_mitra'=>$this->integer(),
             'foto'=>$this->string(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
-            'updated_by'=>$this->integer()
+            'created_by'=>$this->integer(),
+            'updated_by'=>$this->integer(),
         ],$tableOptions);
 
         $this->createTable('{{%stok}}',[
             'id'=>$this->primaryKey(),
             'id_barang'=>$this->integer(),
-            'id_suplier'=>$this->integer(),
+            'id_mitra'=>$this->integer(),
             'qty'=>$this->integer(),
             'harga'=>$this->bigInteger(),
             'id_satuan'=>$this->integer(),
@@ -176,27 +141,17 @@ class m190313_120349_init_db extends Migration
             'updated_at'=>$this->integer(),
             'created_by'=>$this->integer(),
             'updated_by'=>$this->integer(),
+
         ],$tableOptions);
 
-        $this->createTable('{{%supplier}}',[
-            'id'=>$this->primaryKey(),
-            'nama'=>$this->string(),
-            'kontak'=>$this->string(),
-            'created_at'=>$this->integer(),
-            'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer(),
-        ],$tableOptions);
         $this->createTable('{{%transaksi}}',[
-            'id'=>$this->integer(),
-            'id_customer'=>$this->integer(),
+            'id'=>$this->primaryKey(),
+            'id_user'=>$this->integer(),
             'jumlah_bayar'=>$this->bigInteger(),
             'bayar'=>$this->bigInteger(),
             'is_lunas'=>$this->boolean(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer(),
 
         ],$tableOptions);
         $this->createTable('{{%transaksi_detail}}',[
@@ -206,19 +161,26 @@ class m190313_120349_init_db extends Migration
             'qty'=>$this->integer(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
-            'created_by'=>$this->integer(),
-            'updated_by'=>$this->integer(),
 
         ],$tableOptions);
 
         $this->createTable('{{%keranjang_belanja}}',[
             'id'=>$this->integer(),
             'id_stok'=>$this->integer(),
-            'id_customer'=>$this->integer(),
+            'id_user'=>$this->integer(),
             'qty'=>$this->integer(),
             'created_at'=>$this->integer(),
             'updated_at'=>$this->integer(),
 
+        ],$tableOptions);
+
+        $this->createTable('antar',[
+            'id'=>$this->primaryKey(),
+            'id_kurir'=>$this->integer(),
+            'id_transaksi'=>$this->integer(),
+            'status'=>"ENUM('jemput','antar','selesai')",
+            'created_at'=>$this->integer(),
+            'updated_at'=>$this->integer(),
         ],$tableOptions);
     }
 
